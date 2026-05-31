@@ -1,0 +1,57 @@
+/* ========================================
+   PAGINATION
+======================================== */
+
+.pagination-container {
+  display: flex;
+  justify-content: center;
+
+  gap: 8px;
+
+  margin-bottom: 80px;
+}
+
+/* ========================================
+   PAGE NUMBER
+======================================== */
+
+.pagination-container .page-numbers {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 44px;
+  height: 44px;
+
+  border: 1px solid var(--neutral-03);
+  border-radius: var(--radius-md);
+
+  color: var(--neutral-11);
+
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease,
+    color 0.2s ease;
+}
+
+.pagination-container .page-numbers:hover {
+  border-color: var(--orange-2-05);
+
+  color: var(--orange-2-05);
+}
+
+.pagination-container .page-numbers.current {
+  border-color: var(--orange-2-05);
+
+  background: var(--orange-2-05);
+
+  color: var(--neutral-00);
+}
+
+/* Prev/Next Buttons flexible width fix */
+.pagination-container .page-numbers.prev,
+.pagination-container .page-numbers.next {
+  width: auto;
+  padding: 0 16px;
+  gap: 6px;
+}

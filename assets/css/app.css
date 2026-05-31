@@ -1,0 +1,88 @@
+/* ========================================
+   WEBJTI THEME
+   APP.CSS
+======================================== */
+
+/* ========================================
+   BASE
+======================================== */
+
+@import url('./base/reset.css');
+@import url('./base/variables.css');
+@import url('./base/typography.css');
+
+/* ========================================
+   UTILITIES
+======================================== */
+
+@import url('./utilities/container.css');
+@import url('./utilities/flex.css');
+@import url('./utilities/grid.css');
+@import url('./utilities/section.css');
+@import url('./utilities/spacing.css');
+
+/* ========================================
+   COMPONENTS
+======================================== */
+
+/* General Components */
+@import url('./components/button.css');
+@import url('./components/badge.css');
+@import url('./components/segmented-control.css');
+@import url('./components/form.css');
+@import url('./components/alert.css');
+
+/* Shared Components */
+@import url('./components/content-block.css');
+@import url('./components/section-header.css');
+@import url('./components/sidebar-submenu.css');
+@import url('./components/video-modal.css');
+@import url('./components/fast-card.css');
+
+/* Card Components */
+@import url('./components/information-card.css');
+@import url('./components/lecturer-card.css');
+@import url('./components/staff-card.css');
+@import url('./components/card-prestasi.css');
+@import url('./components/study-program-card.css');
+@import url('./components/card-stats.css');
+@import url('./components/campus-card.css');
+
+/* ========================================
+   SECTIONS
+======================================== */
+
+/* Shared Sections */
+@import url('./sections/header.css');
+@import url('./sections/footer.css');
+@import url('./sections/page-header.css');
+@import url('./sections/breadcrumb.css');
+
+/* Landing Sections */
+@import url('./sections/hero.css');
+@import url('./sections/information.css');
+@import url('./sections/stats-section.css');
+@import url('./sections/study-program.css');
+@import url('./sections/video-section.css');
+@import url('./sections/campus-section.css');
+
+/* Documentation Sections */
+@import url('./sections/main-content.css');
+
+/* Detail Sections */
+@import url('./sections/detail-content.css');
+@import url('./sections/related-content.css');
+
+/* Grid Gallery Sections */
+@import url('./sections/filter-toolbar.css');
+@import url('./sections/search-toolbar.css');
+@import url('./sections/grid-gallery.css');
+
+/* Custom Page and Section Styles */
+@import url('./sections/welcome.css');
+@import url('./sections/timeline.css');
+@import url('./sections/mission-list.css');
+@import url('./sections/under-development.css');
+@import url('./components/pagination.css');
+@import url('./sections/achievement.css');
+

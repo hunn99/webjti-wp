@@ -1,0 +1,410 @@
+<?php
+/**
+ * Navigation Menu Template
+ *
+ * @package WebJTI_Theme
+ */
+
+// Fallback function for the default menu matching Figma Mega Menus
+if (!function_exists('webjti_default_primary_menu_fallback')) {
+    function webjti_default_primary_menu_fallback() {
+        // Detect which top-level menu section is currently active
+        $request_uri   = isset( $_SERVER['REQUEST_URI'] ) ? $_SERVER['REQUEST_URI'] : '';
+        $current_slug  = trim( parse_url( $request_uri, PHP_URL_PATH ), '/' );
+
+        $nav_is_active = function( $slugs ) use ( $current_slug ) {
+            foreach ( (array) $slugs as $slug ) {
+                $slug = trim( $slug, '/' );
+                if ( $current_slug === $slug || strpos( $current_slug, $slug . '/' ) === 0 ) {
+                    return true;
+                }
+            }
+            return false;
+        };
+
+        $is_lecturer_active = (isset($_GET['default_lecturer']) && !empty($_GET['default_lecturer'])) || 
+                              is_singular('lecturer') || 
+                              is_post_type_archive('lecturer') || 
+                              is_page_template('templates/pages/lecturer-page.php') ||
+                              $nav_is_active( [ 'lecturer', 'tenaga-pengajar' ] );
+
+        $is_achievement_active = (isset($_GET['default_achievement']) && !empty($_GET['default_achievement'])) || 
+                                 is_singular('prestasi') || 
+                                 is_post_type_archive('prestasi') || 
+                                 is_page_template('templates/pages/achievement-page.php') ||
+                                 $nav_is_active( [ 'achievement', 'prestasi' ] );
+
+        if ( isset($_GET['default_info']) && !empty($_GET['default_info']) ) {
+            $current_page = 'information';
+        } elseif ( $is_lecturer_active ) {
+            $current_page = 'about-us';
+        } elseif ( $is_achievement_active ) {
+            $current_page = 'student-affairs';
+        } elseif ( is_front_page() ) {
+            $current_page = 'beranda';
+        } elseif ( $nav_is_active( [ 'about-us', 'history', 'vision-mission', 'organization-structure', 'lecturer', 'staff', 'sarana-prasarana', 'kerjasama', 'tentang-kami', 'sejarah', 'visi-misi-tujuan', 'visi-misi-dan-tujuan', 'struktur-organisasi', 'tenaga-pengajar', 'tenaga-kependidikan' ] ) ) {
+            $current_page = 'about-us';
+        } elseif ( $nav_is_active( [ 'akademik', 'd2-piranti-lunak', 'd3-mi-kediri', 'd3-mi-lumajang', 'd4-teknik-informatika', 'd4-sistem-informasi-bisnis', 's2-rekayasa-teknologi-informasi', 'kelas-internasional', 'double-degree', 'alih-jenjang', 'rpl', 'aturan-akademik', 'kalender-akademik', 'prodi' ] ) ) {
+            $current_page = 'akademik';
+        } elseif ( $nav_is_active( [ 'student-affairs', 'tata-tertib', 'pkl', 'pkl-magang', 'organisasi-kemahasiswaan', 'pengembangan-karir', 'beasiswa', 'galeri-kemahasiswaan', 'kemahasiswaan' ] ) ) {
+            $current_page = 'student-affairs';
+        } elseif ( $nav_is_active( [ 'penelitian', 'pengabdian', 'lab-nsc', 'lab-rpl', 'lab-ivss', 'lab-inlet', 'lab-ba', 'lab-dt', 'lab-mmt', 'lab-is', 'jurnal' ] ) ) {
+            $current_page = 'penelitian';
+        } elseif ( $nav_is_active( [ 'information', 'news', 'announcement', 'event', 'informasi', 'berita', 'pengumuman', 'agenda' ] ) ) {
+            $current_page = 'information';
+        } else {
+            $current_page = '';
+        }
+        ?>
+        <ul id="menu-primary-menu" class="primary-menu">
+            <!-- Beranda -->
+            <li class="menu-item<?php echo $current_page === 'beranda' ? ' current-menu-item active' : ''; ?>">
+                <a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="menu-link">
+                    Beranda
+                </a>
+            </li>
+
+            <!-- Tentang Kami -->
+            <li class="menu-item menu-item-has-dropdown<?php echo $current_page === 'about-us' ? ' current-menu-item active' : ''; ?>">
+                <a href="<?php echo esc_url( site_url( '/about-us/history' ) ); ?>" class="menu-link">
+                    Tentang Kami
+                    <i class="ph ph-caret-down caret-icon"></i>
+                </a>
+                <div class="mega-dropdown">
+                    <div class="mega-dropdown__col">
+                        <span class="mega-dropdown__label">Tentang Kami</span>
+                        <ul class="mega-dropdown__list">
+                            <li><a href="<?php echo esc_url( site_url( '/about-us/history' ) ); ?>"<?php echo $nav_is_active(['history', 'sejarah']) ? ' class="text-orange"' : ''; ?>>Sejarah Kami</a></li>
+                            <li><a href="<?php echo esc_url( site_url( '/about-us/vision-mission' ) ); ?>"<?php echo $nav_is_active(['vision-mission', 'visi-misi']) ? ' class="text-orange"' : ''; ?>>Visi, Misi dan Tujuan</a></li>
+                        </ul>
+                    </div>
+                    <div class="mega-dropdown__divider"></div>
+                    <div class="mega-dropdown__col">
+                        <span class="mega-dropdown__label">Organisasi</span>
+                        <ul class="mega-dropdown__list">
+                            <li><a href="<?php echo esc_url( site_url( '/about-us/organization-structure' ) ); ?>"<?php echo $nav_is_active(['organization-structure', 'struktur-organisasi']) ? ' class="text-orange"' : ''; ?>>Struktur Organisasi</a></li>
+                            <li><a href="<?php echo esc_url( site_url( '/about-us/lecturer' ) ); ?>"<?php echo $is_lecturer_active ? ' class="text-orange"' : ''; ?>>Tenaga Pengajar</a></li>
+                            <li><a href="<?php echo esc_url( site_url( '/about-us/staff' ) ); ?>"<?php echo $nav_is_active(['staff', 'tenaga-kependidikan']) ? ' class="text-orange"' : ''; ?>>Tenaga Kependidikan</a></li>
+                        </ul>
+                    </div>
+                    <div class="mega-dropdown__divider"></div>
+                    <div class="mega-dropdown__col">
+                        <span class="mega-dropdown__label">Fasilitas & Kerjasama</span>
+                        <ul class="mega-dropdown__list">
+                            <li><a href="<?php echo esc_url( site_url( '/sarana-prasarana' ) ); ?>"<?php echo $nav_is_active(['sarana-prasarana']) ? ' class="text-orange"' : ''; ?>>Sarana dan Prasarana</a></li>
+                            <li><a href="<?php echo esc_url( site_url( '/kerjasama' ) ); ?>"<?php echo $nav_is_active(['kerjasama']) ? ' class="text-orange"' : ''; ?>>Kerjasama</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </li>
+
+            <!-- Akademik -->
+            <li class="menu-item menu-item-has-dropdown<?php echo $current_page === 'akademik' ? ' current-menu-item active' : ''; ?>">
+                <a href="#" class="menu-link" onclick="return false;">
+                    Akademik
+                    <i class="ph ph-caret-down caret-icon"></i>
+                </a>
+                <div class="mega-dropdown mega-dropdown--wide">
+                    <div class="mega-dropdown__col">
+                        <span class="mega-dropdown__label">Program Pendidikan</span>
+                        <ul class="mega-dropdown__list mega-dropdown__list--grouped">
+                            <li class="mega-dropdown__group">
+                                <span class="mega-dropdown__sublabel">Diploma II (D2)</span>
+                                <a href="<?php echo esc_url( site_url( '/d2-piranti-lunak' ) ); ?>">D2 Pengembangan Piranti Lunak Situs</a>
+                            </li>
+                            <li class="mega-dropdown__group">
+                                <span class="mega-dropdown__sublabel">Diploma III (D3)</span>
+                                <a href="<?php echo esc_url( site_url( '/d3-mi-kediri' ) ); ?>">D3 Manajemen Informatika (Kediri)</a>
+                                <a href="<?php echo esc_url( site_url( '/d3-mi-lumajang' ) ); ?>">D3 Manajemen Informatika (Lumajang)</a>
+                            </li>
+                            <li class="mega-dropdown__group">
+                                <span class="mega-dropdown__sublabel">Diploma IV (D4)</span>
+                                <a href="<?php echo esc_url( site_url( '/d4-teknik-informatika' ) ); ?>">D4 Teknik Informatika</a>
+                                <a href="<?php echo esc_url( site_url( '/d4-sistem-informasi-bisnis' ) ); ?>">D4 Sistem Informasi Bisnis</a>
+                            </li>
+                            <li class="mega-dropdown__group">
+                                <span class="mega-dropdown__sublabel">Magister Terapan</span>
+                                <a href="<?php echo esc_url( site_url( '/s2-rekayasa-teknologi-informasi' ) ); ?>">S2 Rekayasa Teknologi Informasi</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="mega-dropdown__divider"></div>
+                    <div class="mega-dropdown__col">
+                        <span class="mega-dropdown__label">Program Khusus</span>
+                        <ul class="mega-dropdown__list">
+                            <li><a href="<?php echo esc_url( site_url( '/kelas-internasional' ) ); ?>">Kelas Internasional</a></li>
+                            <li><a href="<?php echo esc_url( site_url( '/double-degree' ) ); ?>">Double Degree</a></li>
+                            <li><a href="<?php echo esc_url( site_url( '/alih-jenjang' ) ); ?>">Alih Jenjang</a></li>
+                            <li><a href="<?php echo esc_url( site_url( '/rpl' ) ); ?>">Rekognisi Pembelajaran Lampau (RPL)</a></li>
+                        </ul>
+                    </div>
+                    <div class="mega-dropdown__divider"></div>
+                    <div class="mega-dropdown__col">
+                        <span class="mega-dropdown__label">Layanan Akademik</span>
+                        <ul class="mega-dropdown__list">
+                            <li><a href="<?php echo esc_url( site_url( '/aturan-akademik' ) ); ?>">Aturan Akademik</a></li>
+                            <li><a href="<?php echo esc_url( site_url( '/kalender-akademik' ) ); ?>">Kalender Akademik</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </li>
+
+            <!-- Kemahasiswaan -->
+            <li class="menu-item menu-item-has-dropdown<?php echo $current_page === 'student-affairs' ? ' current-menu-item' : ''; ?>">
+                <a href="<?php echo esc_url( site_url( '/student-affairs/achievement' ) ); ?>" class="menu-link">
+                    Kemahasiswaan
+                    <i class="ph ph-caret-down caret-icon"></i>
+                </a>
+                <div class="mega-dropdown">
+                    <div class="mega-dropdown__col">
+                        <span class="mega-dropdown__label">Informasi Umum</span>
+                        <ul class="mega-dropdown__list">
+                            <li><a href="<?php echo esc_url( site_url( '/tata-tertib' ) ); ?>">Tata Tertib</a></li>
+                            <li><a href="<?php echo esc_url( site_url( '/pkl' ) ); ?>">Praktik Kerja Lapangan / Magang</a></li>
+                        </ul>
+                    </div>
+                    <div class="mega-dropdown__divider"></div>
+                    <div class="mega-dropdown__col">
+                        <span class="mega-dropdown__label">Pengembangan Mahasiswa</span>
+                        <ul class="mega-dropdown__list">
+                            <li><a href="<?php echo esc_url( site_url( '/organisasi-kemahasiswaan' ) ); ?>">Organisasi Kemahasiswaan</a></li>
+                            <li><a href="<?php echo esc_url( site_url( '/student-affairs/achievement' ) ); ?>"<?php echo $is_achievement_active ? ' class="text-orange"' : ''; ?>>Prestasi</a></li>
+                            <li><a href="<?php echo esc_url( site_url( '/pengembangan-karir' ) ); ?>">Pengembangan Karir</a></li>
+                        </ul>
+                    </div>
+                    <div class="mega-dropdown__divider"></div>
+                    <div class="mega-dropdown__col">
+                        <span class="mega-dropdown__label">Dukungan Mahasiswa</span>
+                        <ul class="mega-dropdown__list">
+                            <li><a href="<?php echo esc_url( site_url( '/beasiswa' ) ); ?>">Beasiswa</a></li>
+                            <li><a href="<?php echo esc_url( site_url( '/galeri-kemahasiswaan' ) ); ?>">Galeri Kemahasiswaan</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </li>
+
+            <!-- Penelitian -->
+            <li class="menu-item menu-item-has-dropdown<?php echo $current_page === 'penelitian' ? ' current-menu-item' : ''; ?>">
+                <a href="#" class="menu-link" onclick="return false;">
+                    Penelitian
+                    <i class="ph ph-caret-down caret-icon"></i>
+                </a>
+                <div class="mega-dropdown mega-dropdown--wide">
+                    <div class="mega-dropdown__col mega-dropdown__col--narrow">
+                        <span class="mega-dropdown__label">Kegiatan Utama</span>
+                        <ul class="mega-dropdown__list">
+                            <li><a href="<?php echo esc_url( site_url( '/penelitian' ) ); ?>">Penelitian</a></li>
+                            <li><a href="<?php echo esc_url( site_url( '/pengabdian' ) ); ?>">Pengabdian</a></li>
+                        </ul>
+                    </div>
+                    <div class="mega-dropdown__divider"></div>
+                    <div class="mega-dropdown__col mega-dropdown__col--wide">
+                        <span class="mega-dropdown__label">Laboratorium Riset</span>
+                        <div class="mega-dropdown__subcols">
+                            <ul class="mega-dropdown__list">
+                                <li><a href="<?php echo esc_url( site_url( '/lab-nsc' ) ); ?>">Laboratorium Jaringan dan Keamanan Siber (NSC)</a></li>
+                                <li><a href="<?php echo esc_url( site_url( '/lab-rpl' ) ); ?>">Laboratorium Rekayasa Perangkat Lunak (RPL)</a></li>
+                                <li><a href="<?php echo esc_url( site_url( '/lab-ivss' ) ); ?>">Laboratorium Visi Cerdas dan Sistem Cerdas (IVSS)</a></li>
+                                <li><a href="<?php echo esc_url( site_url( '/lab-inlet' ) ); ?>">Information and Learning Engineering Technology Laboratory (InLET)</a></li>
+                            </ul>
+                            <ul class="mega-dropdown__list">
+                                <li><a href="<?php echo esc_url( site_url( '/lab-ba' ) ); ?>">Laboratorium Analisa Bisnis (BA)</a></li>
+                                <li><a href="<?php echo esc_url( site_url( '/lab-dt' ) ); ?>">Laboratorium Teknologi Data (DT)</a></li>
+                                <li><a href="<?php echo esc_url( site_url( '/lab-mmt' ) ); ?>">Laboratorium Multimedia dan Perangkat Bergerak (MMT)</a></li>
+                                <li><a href="<?php echo esc_url( site_url( '/lab-is' ) ); ?>">Laboratorium Informatika Terapan (IS)</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="mega-dropdown__divider"></div>
+                    <div class="mega-dropdown__col mega-dropdown__col--narrow">
+                        <span class="mega-dropdown__label">Dukungan Mahasiswa</span>
+                        <ul class="mega-dropdown__list">
+                            <li><a href="<?php echo esc_url( site_url( '/jurnal' ) ); ?>">Jurnal</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </li>
+
+            <!-- Informasi -->
+            <li class="menu-item<?php echo $current_page === 'information' ? ' current-menu-item active' : ''; ?>">
+                <?php
+                $info_page_id = get_theme_mod('jti_page_informasi');
+                $info_page_link = $info_page_id ? get_permalink($info_page_id) : site_url('/information');
+                ?>
+                <a href="<?php echo esc_url( $info_page_link ); ?>" class="menu-link">
+                    Informasi
+                </a>
+            </li>
+        </ul>
+        <?php
+    }
+}
+
+// Filter to change 'menu-item-has-children' to 'menu-item-has-dropdown' for CSS match
+$jti_nav_class_filter = function($classes, $item, $args) {
+    if ($args->theme_location === 'main_menu') {
+        if (in_array('menu-item-has-children', $classes)) {
+            $classes[] = 'menu-item-has-dropdown';
+        }
+        $classes[] = 'menu-item';
+
+        // Swap active state on default_info fallback pages (which technically route to home page '/')
+        if (isset($_GET['default_info']) && !empty($_GET['default_info'])) {
+            $item_url = untrailingslashit($item->url);
+            $home_url = untrailingslashit(home_url());
+            $site_url = untrailingslashit(site_url());
+            
+            // Remove active classes from Beranda (Home)
+            if ($item_url === $home_url || $item_url === $site_url || $item->title === 'Beranda') {
+                $classes = array_filter($classes, function($cls) {
+                    return strpos($cls, 'current') === false && strpos($cls, 'active') === false;
+                });
+            }
+            // Add active classes to Informasi
+            if (strpos($item->url, '/information') !== false || $item->title === 'Informasi') {
+                $classes[] = 'current-menu-item';
+                $classes[] = 'active';
+            }
+        }
+
+        // Swap active state on default_lecturer fallback pages, singular lecturer detail pages, archives, page templates, or matching URLs
+        $is_lecturer_page = (isset($_GET['default_lecturer']) && !empty($_GET['default_lecturer'])) || 
+                            is_singular('lecturer') || 
+                            is_post_type_archive('lecturer') || 
+                            is_page_template('templates/pages/lecturer-page.php') ||
+                            (isset($_SERVER['REQUEST_URI']) && (strpos($_SERVER['REQUEST_URI'], '/lecturer') !== false || strpos($_SERVER['REQUEST_URI'], '/tenaga-pengajar') !== false));
+        
+        if ($is_lecturer_page) {
+            $item_url = untrailingslashit($item->url);
+            $home_url = untrailingslashit(home_url());
+            $site_url = untrailingslashit(site_url());
+            $item_title_clean = str_replace([' ', '-'], '', strtolower($item->title));
+            
+            // Remove active classes from Beranda (Home)
+            if ($item_url === $home_url || $item_url === $site_url || $item_title_clean === 'beranda') {
+                $classes = array_filter($classes, function($cls) {
+                    return strpos($cls, 'current') === false && strpos($cls, 'active') === false;
+                });
+            }
+            // Add active classes to Tentang Kami (about-us)
+            if (
+                strpos($item->url, '/about-us') !== false || 
+                strpos($item->url, '/tentang-kami') !== false || 
+                $item_title_clean === 'tentangkami' ||
+                $item_title_clean === 'aboutus'
+            ) {
+                $classes[] = 'current-menu-item';
+                $classes[] = 'active';
+                $classes[] = 'current-menu-ancestor';
+            }
+            // Add active classes to Tenaga Pengajar (lecturer)
+            if (
+                strpos($item->url, '/lecturer') !== false || 
+                strpos($item->url, '/tenaga-pengajar') !== false || 
+                $item_title_clean === 'tenagapengajar' ||
+                $item_title_clean === 'lecturer'
+            ) {
+                $classes[] = 'current-menu-item';
+                $classes[] = 'active';
+            }
+        }
+
+        // Swap active state on default_achievement / prestasi pages
+        $is_achievement_page = (isset($_GET['default_achievement']) && !empty($_GET['default_achievement'])) || 
+                               is_singular('prestasi') || 
+                               is_post_type_archive('prestasi') || 
+                               is_page_template('templates/pages/achievement-page.php') ||
+                               (isset($_SERVER['REQUEST_URI']) && (strpos($_SERVER['REQUEST_URI'], '/achievement') !== false || strpos($_SERVER['REQUEST_URI'], '/prestasi') !== false));
+        
+        if ($is_achievement_page) {
+            $item_url = untrailingslashit($item->url);
+            $home_url = untrailingslashit(home_url());
+            $site_url = untrailingslashit(site_url());
+            $item_title_clean = str_replace([' ', '-'], '', strtolower($item->title));
+            
+            // Remove active classes from Beranda (Home)
+            if ($item_url === $home_url || $item_url === $site_url || $item_title_clean === 'beranda') {
+                $classes = array_filter($classes, function($cls) {
+                    return strpos($cls, 'current') === false && strpos($cls, 'active') === false;
+                });
+            }
+            // Add active classes to Kemahasiswaan
+            if (
+                strpos($item->url, '/student-affairs') !== false || 
+                strpos($item->url, '/kemahasiswaan') !== false || 
+                $item_title_clean === 'kemahasiswaan' ||
+                $item_title_clean === 'studentaffairs'
+            ) {
+                $classes[] = 'current-menu-item';
+                $classes[] = 'active';
+                $classes[] = 'current-menu-ancestor';
+            }
+            // Add active classes to Prestasi
+            if (
+                strpos($item->url, '/achievement') !== false || 
+                strpos($item->url, '/prestasi') !== false || 
+                $item_title_clean === 'prestasi' ||
+                $item_title_clean === 'achievement'
+            ) {
+                $classes[] = 'current-menu-item';
+                $classes[] = 'active';
+            }
+        }
+    }
+    return $classes;
+};
+
+// Filter to add the Phosphor caret icon to parent items
+$jti_nav_title_filter = function($title, $item, $args, $depth) {
+    if ($args->theme_location === 'main_menu' && in_array('menu-item-has-children', $item->classes) && $depth === 0) {
+        $title .= ' <i class="ph ph-caret-down caret-icon"></i>';
+    }
+    return $title;
+};
+
+// Filter to add 'menu-link' class to anchor tags
+$jti_nav_link_filter = function($atts, $item, $args) {
+    if ($args->theme_location === 'main_menu') {
+        if (isset($atts['class'])) {
+            $atts['class'] .= ' menu-link';
+        } else {
+            $atts['class'] = 'menu-link';
+        }
+    }
+    return $atts;
+};
+
+add_filter('nav_menu_css_class', $jti_nav_class_filter, 10, 3);
+add_filter('nav_menu_item_title', $jti_nav_title_filter, 10, 4);
+add_filter('nav_menu_link_attributes', $jti_nav_link_filter, 10, 3);
+
+?>
+
+<div class="navigation-menu-wrapper" style="flex: 1; display: flex; justify-content: center; height: 100%;">
+    <?php
+    $menu_location = 'main_menu';
+    $menu_locations = get_nav_menu_locations();
+    $menu_id = $menu_locations[$menu_location] ?? 0;
+    $menu_items = $menu_id ? wp_get_nav_menu_items($menu_id) : [];
+
+    if (!empty($menu_items)) {
+        wp_nav_menu([
+            'theme_location'  => $menu_location,
+            'menu_id'         => 'primary-menu',
+            'container'       => false,
+            'menu_class'      => 'primary-menu',
+            'fallback_cb'     => 'webjti_default_primary_menu_fallback',
+            'depth'           => 3, // Support for mega dropdowns
+        ]);
+    } else {
+        webjti_default_primary_menu_fallback();
+    }
+    ?>
+</div>
+
+<?php
+// Remove filters after output so they don't affect other menus (like footer menu)
+remove_filter('nav_menu_css_class', $jti_nav_class_filter, 10);
+remove_filter('nav_menu_item_title', $jti_nav_title_filter, 10);
+remove_filter('nav_menu_link_attributes', $jti_nav_link_filter, 10);
+?>

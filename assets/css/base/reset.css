@@ -1,0 +1,121 @@
+/* ========================================
+   RESET CSS
+   WebJTI Theme
+======================================== */
+
+/* ========================================
+   BOX SIZING
+======================================== */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* ========================================
+   RESET MARGIN & PADDING
+======================================== */
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+/* ========================================
+   HTML & BODY
+======================================== */
+
+html {
+  scroll-behavior: smooth;
+}
+
+html,
+body {
+  min-height: 100%;
+  overflow-x: clip;
+}
+
+body {
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ========================================
+   HTML5 ELEMENTS
+======================================== */
+
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section {
+  display: block;
+}
+
+/* ========================================
+   MEDIA ELEMENTS
+======================================== */
+
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+img {
+  height: auto;
+}
+
+/* ========================================
+   FORM ELEMENTS
+======================================== */
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+button {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+/* ========================================
+   LINKS
+======================================== */
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* ========================================
+   LISTS
+======================================== */
+
+ul,
+ol {
+  list-style: none;
+}
+
+/* ========================================
+   TABLE
+======================================== */
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}

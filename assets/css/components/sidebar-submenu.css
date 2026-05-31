@@ -1,0 +1,175 @@
+/* ========================================
+   SIDEBAR SUBMENU
+   WebJTI Theme
+======================================== */
+
+.sidebar-submenu {
+  position: sticky;
+  top: 140px;
+
+  width: 214px;
+  height: fit-content;
+
+  flex-shrink: 0;
+}
+
+/* ========================================
+   GROUP
+======================================== */
+
+.sidebar-group {
+  margin-bottom: 24px;
+}
+
+.sidebar-group:last-child {
+  margin-bottom: 0;
+}
+
+/* ========================================
+   GROUP TITLE
+======================================== */
+
+.sidebar-group-title {
+  margin-bottom: 4px;
+
+  color: var(--neutral-06);
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.5;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+/* ========================================
+   MENU LIST
+======================================== */
+
+.sidebar-menu-list {
+  display: flex;
+  flex-direction: column;
+
+  gap: 0;
+
+  margin: 0;
+  padding: 0;
+
+  list-style: none;
+}
+
+/* ========================================
+   MENU ITEM
+======================================== */
+
+.sidebar-menu-item {
+  border-radius: var(--radius-sm);
+}
+
+/* ========================================
+   MENU LINK
+======================================== */
+
+.sidebar-menu-link {
+  display: flex;
+  align-items: center;
+
+  gap: 8px;
+
+  padding: 12px;
+
+  border-radius: var(--radius-sm);
+
+  color: var(--neutral-06);
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.5;
+  text-decoration: none;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
+}
+
+.sidebar-menu-link:hover {
+  background: var(--neutral-02);
+
+  color: var(--neutral-11);
+}
+
+/* ========================================
+   ACTIVE
+======================================== */
+
+.sidebar-menu-item.active .sidebar-menu-link {
+  background: transparent;
+
+  color: var(--neutral-11);
+  font-weight: 400;
+}
+
+/* ========================================
+   ICON
+======================================== */
+
+.sidebar-menu-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 20px;
+  height: 20px;
+
+  flex-shrink: 0;
+
+  color: var(--neutral-06);
+
+  transition:
+    color 0.2s ease;
+}
+
+.sidebar-menu-icon i {
+  font-size: 20px;
+
+  line-height: 1;
+}
+
+/* ========================================
+   ACTIVE ICON
+======================================== */
+
+.sidebar-menu-item.active
+.sidebar-menu-icon {
+  color: var(--orange-2-07);
+}
+
+/* ========================================
+   LABEL
+======================================== */
+
+.sidebar-menu-label {
+  flex: 1;
+
+  min-width: 0;
+}
+
+/* ========================================
+   RESPONSIVE
+======================================== */
+
+@media (max-width: 1024px) {
+
+  .sidebar-submenu {
+    position: static;
+
+    width: 100%;
+  }
+
+}
+
+@media (max-width: 768px) {
+
+  .sidebar-menu-link {
+    padding:
+      10px 14px;
+  }
+
+}

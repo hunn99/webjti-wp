@@ -1,0 +1,75 @@
+/* ========================================
+   MAIN CONTENT
+======================================== */
+
+.site-main.with-sidebar {
+  display: flex;
+  flex-direction: column;
+
+  flex: 1;
+
+  gap: 40px;
+}
+
+/* ========================================
+   PAGE CONTAINER
+======================================== */
+
+.page-container {
+  padding-top: 40px;
+  padding-bottom: 80px;
+}
+
+/* ========================================
+   PAGE LAYOUT WITH SIDEBAR (FIGMA 907-12037)
+======================================== */
+
+.page-layout.with-sidebar {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+
+  gap: 48px;
+
+  padding-top: 60px;
+  padding-bottom: 120px;
+}
+
+.page-layout.with-sidebar .page-content {
+  display: flex;
+  flex-direction: column;
+
+  flex: 1;
+
+  min-width: 0;
+
+  gap: 48px;
+}
+
+/* ========================================
+   RESPONSIVE DESIGN
+======================================== */
+
+@media (max-width: 1024px) {
+  .page-layout.with-sidebar {
+    flex-direction: column;
+
+    gap: 32px;
+
+    padding-top: 40px;
+    padding-bottom: 80px;
+  }
+}
+
+@media (max-width: 768px) {
+  .page-layout.with-sidebar {
+    gap: 24px;
+
+    padding-top: 30px;
+    padding-bottom: 60px;
+  }
+
+  .page-layout.with-sidebar .page-content {
+    gap: 32px;
+  }
+}
