@@ -36,9 +36,18 @@ $links = [
 ];
 
 $lang_enabled = get_theme_mod('jti_topbar_lang_enabled', true);
-$lang_active = get_theme_mod('jti_topbar_lang_active', 'id');
-$lang_en_url = get_theme_mod('jti_topbar_lang_en_url', '#');
-$lang_id_url = get_theme_mod('jti_topbar_lang_id_url', '#');
+$cookie_lang = 'id';
+if (isset($_COOKIE['googtrans']) && strpos($_COOKIE['googtrans'], '/en') !== false) {
+    $cookie_lang = 'en';
+}
+$lang_active = isset($_GET['lang']) ? sanitize_text_field($_GET['lang']) : $cookie_lang;
+
+$custom_en_url = get_theme_mod('jti_topbar_lang_en_url', '#');
+$lang_en_url = ($custom_en_url === '#' || empty($custom_en_url)) ? add_query_arg('lang', 'en') : $custom_en_url;
+
+$custom_id_url = get_theme_mod('jti_topbar_lang_id_url', '#');
+$lang_id_url = ($custom_id_url === '#' || empty($custom_id_url)) ? add_query_arg('lang', 'id') : $custom_id_url;
+
 $lang_en_icon = get_theme_mod('jti_topbar_lang_en_icon', get_template_directory_uri() . '/assets/images/icons/flag-en.svg');
 $lang_id_icon = get_theme_mod('jti_topbar_lang_id_icon', get_template_directory_uri() . '/assets/images/icons/flag-id.svg');
 ?>

@@ -165,6 +165,12 @@
 
 }
 
+@media (max-width: 900px) {
+  .sidebar-submenu {
+    display: none;
+  }
+}
+
 @media (max-width: 768px) {
 
   .sidebar-menu-link {

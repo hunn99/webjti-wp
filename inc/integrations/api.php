@@ -74,7 +74,7 @@ function webjti_api_lecturers()
 function webjti_api_achievements()
 {
     $query = new WP_Query([
-        'post_type'      => 'prestasi',
+        'post_type'      => 'achievement',
         'posts_per_page' => 10,
         'post_status'    => 'publish',
     ]);

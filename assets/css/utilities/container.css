@@ -49,12 +49,25 @@
 /* Mobile */
 @media (max-width: 768px) {
   .container {
-    --container-padding: 20px;
+    --container-padding: 24px;
   }
   .container-fluid {
-    --container-padding: 20px;
+    --container-padding: 24px;
   }
   .container--wide {
-    --container-padding: 20px;
+    --container-padding: 24px;
+  }
+}
+
+/* Small Mobile (480px) */
+@media (max-width: 480px) {
+  .container {
+    --container-padding: 16px;
+  }
+  .container-fluid {
+    --container-padding: 16px;
+  }
+  .container--wide {
+    --container-padding: 16px;
   }
 }

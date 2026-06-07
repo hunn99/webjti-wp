@@ -64,3 +64,15 @@
     margin-bottom: 40px;
   }
 }
+
+@media (max-width: 480px) {
+  .study-programs-section {
+    padding: 48px 16px;
+  }
+}
+
+@media (max-width: 425px) {
+  .study-programs-section {
+    padding: 40px 16px;
+  }
+}

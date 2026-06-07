@@ -339,3 +339,17 @@
   }
 
 }
+
+@media (max-width: 425px) {
+  .stats-section.is-landing
+  .stats-container {
+    padding: 16px;
+  }
+}
+
+@media (max-width: 375px) {
+  .stats-section.is-landing
+  .stats-value {
+    font-size: 32px;
+  }
+}

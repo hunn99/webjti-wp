@@ -101,6 +101,18 @@
   }
 }
 
+@media (max-width: 480px) {
+  .video-section {
+    padding: 48px 16px;
+  }
+}
+
+@media (max-width: 425px) {
+  .video-section {
+    padding: 40px 16px;
+  }
+}
+
 /* ========================================
    HISTORY PAGE VIDEO LAYOUT
 ======================================== */

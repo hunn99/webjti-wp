@@ -21,7 +21,7 @@ if ($is_default) {
     // Real CPT team members query
     $post_id = get_the_ID();
     $query = new WP_Query([
-        'post_type' => 'anggota_prestasi',
+        'post_type' => 'achievement_member',
         'posts_per_page' => -1,
         'meta_query' => [
             'relation' => 'OR',

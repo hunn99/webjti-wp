@@ -299,6 +299,11 @@ function initMobileMenu() {
     }
   );
 
+  const closeBtn = document.querySelector('.mobile-menu-close');
+  if (closeBtn) {
+    closeBtn.addEventListener('click', closeMenu);
+  }
+
 }
 
 /* ========================================

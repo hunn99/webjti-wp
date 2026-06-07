@@ -12,12 +12,14 @@
   margin-bottom: 60px;
 
   text-align: center;
+  width: 100%;
 }
 
 .section-title {
   color: var(--Neutral-11, #0C0A09);
   text-align: center;
-  width: 444px;
+  max-width: 444px;
+  width: 100%;
 
   /* Heading/Desktop/H2 */
   font-family: Helvetica;
@@ -29,7 +31,8 @@
 
 .section-title--hero {
   color: var(--neutral-00, #FFFFFF);
-  width: 640px;
+  max-width: 640px;
+  width: 100%;
   text-align: left;
   font-size: var(--display-size);
 

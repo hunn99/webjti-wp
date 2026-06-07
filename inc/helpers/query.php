@@ -2040,7 +2040,7 @@ function webjti_get_fallback_lecturer_data($default_id = 'default-1') {
  */
 function webjti_get_achievement_ketua($achievement_id) {
   $query = new WP_Query([
-    'post_type'      => 'anggota_prestasi',
+    'post_type'      => 'achievement_member',
     'posts_per_page' => 1,
     'post_status'    => 'publish',
     'meta_query'     => [
@@ -2060,7 +2060,7 @@ function webjti_get_achievement_ketua($achievement_id) {
 
   if (!$query->have_posts()) {
     $query = new WP_Query([
-      'post_type'      => 'anggota_prestasi',
+      'post_type'      => 'achievement_member',
       'posts_per_page' => 1,
       'post_status'    => 'publish',
       'meta_query'     => [
@@ -2080,22 +2080,41 @@ function webjti_get_achievement_ketua($achievement_id) {
   }
 
   $ketua_name = '-';
+  $prodi_lbl = '-';
+  $prodi_id = 0;
+
   if ($query->have_posts()) {
     $query->the_post();
     $ketua_name = get_field('member_name') ?: get_field('nama') ?: get_the_title();
+    
+    // Fetch study program (Prodi) from the member
+    $study_program = get_field('study_program');
+    if ($study_program) {
+      if (is_object($study_program)) {
+        $prodi_lbl = $study_program->post_title;
+        $prodi_id = $study_program->ID;
+      } elseif (is_numeric($study_program)) {
+        $prodi_lbl = get_the_title($study_program);
+        $prodi_id = $study_program;
+      }
+    }
   }
   wp_reset_postdata();
 
-  return $ketua_name;
+  return [
+    'name' => $ketua_name,
+    'prodi_lbl' => $prodi_lbl,
+    'prodi_id' => $prodi_id
+  ];
 }
 
 /**
  * Get Unique List of Achievement Years
  */
 function webjti_get_achievement_years() {
-  if (post_type_exists('prestasi')) {
+  if (post_type_exists('achievement')) {
     $all_prestasi_ids = get_posts([
-      'post_type'      => 'prestasi',
+      'post_type'      => 'achievement',
       'post_status'    => 'publish',
       'posts_per_page' => -1,
       'fields'         => 'ids',
@@ -2124,9 +2143,9 @@ function webjti_get_achievement_years() {
  * Get Achievement Metrics (Total, Nasional, Internasional, PKM)
  */
 function webjti_get_achievement_metrics() {
-  if (post_type_exists('prestasi')) {
+  if (post_type_exists('achievement')) {
     $query = new WP_Query([
-      'post_type'      => 'prestasi',
+      'post_type'      => 'achievement',
       'posts_per_page' => -1,
       'post_status'    => 'publish',
     ]);
@@ -2208,9 +2227,9 @@ function webjti_get_achievement_metrics() {
  */
 function webjti_get_achievements_list($filters = [], $paged = 1, $posts_per_page = 10) {
   $has_posts = false;
-  if (post_type_exists('prestasi')) {
+  if (post_type_exists('achievement')) {
     $count_query = new WP_Query([
-      'post_type'      => 'prestasi',
+      'post_type'      => 'achievement',
       'posts_per_page' => 1,
       'post_status'    => 'publish',
     ]);
@@ -2309,7 +2328,7 @@ function webjti_get_achievements_list($filters = [], $paged = 1, $posts_per_page
     }
 
     $args = [
-      'post_type'      => 'prestasi',
+      'post_type'      => 'achievement',
       'posts_per_page' => $posts_per_page,
       'paged'          => $paged,
       'post_status'    => 'publish',
@@ -2329,18 +2348,25 @@ function webjti_get_achievements_list($filters = [], $paged = 1, $posts_per_page
       $query->the_post();
 
       $post_id     = get_the_ID();
-      $prodi_val   = get_field('program_studi') ?: get_field('prodi') ?: '-';
-      $prodi_lbl   = isset($prodi_labels[$prodi_val]) ? $prodi_labels[$prodi_val] : $prodi_val;
-      $ketua_val   = webjti_get_achievement_ketua($post_id);
-      $judul_val   = get_field('judul_kompetisi') ?: get_the_title();
-      $tahun_val   = get_field('achievement_year') ?: get_field('tahun_prestasi') ?: '-';
-      $juara_val   = get_field('rank') ?: get_field('juara') ?: '-';
+      $ketua_details = webjti_get_achievement_ketua($post_id);
+      $ketua_val   = $ketua_details['name'];
+
+      $prodi_val   = get_field('program_studi', $post_id) ?: get_field('prodi', $post_id);
+      $prodi_lbl   = '-';
+      if ($prodi_val) {
+        $prodi_lbl = isset($prodi_labels[$prodi_val]) ? $prodi_labels[$prodi_val] : $prodi_val;
+      } else {
+        $prodi_lbl = $ketua_details['prodi_lbl'];
+      }
+      $judul_val   = get_field('judul_kompetisi', $post_id) ?: get_the_title($post_id);
+      $tahun_val   = get_field('achievement_year', $post_id) ?: get_field('tahun_prestasi', $post_id) ?: '-';
+      $juara_val   = get_field('rank', $post_id) ?: get_field('juara', $post_id) ?: '-';
       $juara_lbl   = isset($juara_labels[$juara_val]) ? $juara_labels[$juara_val] : $juara_val;
       $juara_cls   = str_replace('_', '-', $juara_val);
-      $tingkat_val = get_field('level') ?: get_field('tingkat') ?: '-';
+      $tingkat_val = get_field('level', $post_id) ?: get_field('tingkat', $post_id) ?: '-';
       $tingkat_lbl = isset($tingkat_labels[$tingkat_val]) ? $tingkat_labels[$tingkat_val] : $tingkat_val;
       $tingkat_cls = 'tingkat-' . $tingkat_val;
-      $is_pkm      = get_field('is_pkm') ? true : false;
+      $is_pkm      = get_field('is_pkm', $post_id) ? true : false;
 
       $rows[] = [
         'prodi'         => $prodi_lbl,
@@ -2351,7 +2377,7 @@ function webjti_get_achievements_list($filters = [], $paged = 1, $posts_per_page
         'juara_class'   => $juara_cls,
         'tingkat'       => $tingkat_lbl,
         'tingkat_class' => $tingkat_cls,
-        'url'           => get_permalink(),
+        'url'           => get_permalink($post_id),
         'is_pkm'        => $is_pkm,
       ];
     }

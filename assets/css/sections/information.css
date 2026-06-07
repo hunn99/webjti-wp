@@ -448,3 +448,18 @@
     padding: 60px 16px;
   }
 }
+
+@media (max-width: 425px) {
+  .information-slider-item {
+    width: 240px;
+  }
+}
+
+@media (max-width: 375px) {
+  .information-slider-item {
+    width: 220px;
+  }
+  .information-slider-title {
+    font-size: 22px;
+  }
+}

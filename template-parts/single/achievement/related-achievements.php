@@ -17,7 +17,7 @@ if ($is_default) {
     // Real CPT query for other achievements
     $current_id = get_the_ID();
     $query = new WP_Query([
-        'post_type' => 'prestasi',
+        'post_type' => 'achievement',
         'posts_per_page' => 3,
         'post__not_in' => [$current_id],
         'post_status' => 'publish'

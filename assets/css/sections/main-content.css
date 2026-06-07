@@ -59,6 +59,12 @@
     padding-top: 40px;
     padding-bottom: 80px;
   }
+
+  .page-layout.with-sidebar .page-content,
+  .page-layout.with-sidebar .sidebar-col {
+    width: 100%;
+    max-width: 100%;
+  }
 }
 
 @media (max-width: 768px) {

@@ -39,6 +39,18 @@ body {
 body {
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+}
+
+/* Force headings to break long words and stay within bounds */
+h1, h2, h3, h4, h5, h6,
+.section-title {
+  word-break: break-word;
+  overflow-wrap: break-word;
+  -webkit-hyphens: auto;
+  hyphens: auto;
+  max-width: 100%;
 }
 
 /* ========================================

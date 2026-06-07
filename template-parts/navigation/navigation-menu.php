@@ -29,8 +29,8 @@ if (!function_exists('webjti_default_primary_menu_fallback')) {
                               $nav_is_active( [ 'lecturer', 'tenaga-pengajar' ] );
 
         $is_achievement_active = (isset($_GET['default_achievement']) && !empty($_GET['default_achievement'])) || 
-                                 is_singular('prestasi') || 
-                                 is_post_type_archive('prestasi') || 
+                                 is_singular('achievement') || 
+                                 is_post_type_archive('achievement') || 
                                  is_page_template('templates/pages/achievement-page.php') ||
                                  $nav_is_active( [ 'achievement', 'prestasi' ] );
 
@@ -56,7 +56,13 @@ if (!function_exists('webjti_default_primary_menu_fallback')) {
             $current_page = '';
         }
         ?>
-        <ul id="menu-primary-menu" class="primary-menu">
+        <ul id="primary-menu" class="primary-menu">
+            <li class="mobile-menu-header">
+                <span class="mobile-menu-title">Menu</span>
+                <button type="button" class="mobile-menu-close" aria-label="Tutup Menu">
+                    <i class="ph ph-x"></i>
+                </button>
+            </li>
             <!-- Beranda -->
             <li class="menu-item<?php echo $current_page === 'beranda' ? ' current-menu-item active' : ''; ?>">
                 <a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="menu-link">
@@ -66,7 +72,7 @@ if (!function_exists('webjti_default_primary_menu_fallback')) {
 
             <!-- Tentang Kami -->
             <li class="menu-item menu-item-has-dropdown<?php echo $current_page === 'about-us' ? ' current-menu-item active' : ''; ?>">
-                <a href="<?php echo esc_url( site_url( '/about-us/history' ) ); ?>" class="menu-link">
+                <a href="<?php echo esc_url( site_url( '/about-us/history' ) ); ?>" class="menu-link menu-link--dropdown">
                     Tentang Kami
                     <i class="ph ph-caret-down caret-icon"></i>
                 </a>
@@ -100,7 +106,7 @@ if (!function_exists('webjti_default_primary_menu_fallback')) {
 
             <!-- Akademik -->
             <li class="menu-item menu-item-has-dropdown<?php echo $current_page === 'akademik' ? ' current-menu-item active' : ''; ?>">
-                <a href="#" class="menu-link" onclick="return false;">
+                <a href="#" class="menu-link menu-link--dropdown" onclick="return false;">
                     Akademik
                     <i class="ph ph-caret-down caret-icon"></i>
                 </a>
@@ -151,7 +157,7 @@ if (!function_exists('webjti_default_primary_menu_fallback')) {
 
             <!-- Kemahasiswaan -->
             <li class="menu-item menu-item-has-dropdown<?php echo $current_page === 'student-affairs' ? ' current-menu-item' : ''; ?>">
-                <a href="<?php echo esc_url( site_url( '/student-affairs/achievement' ) ); ?>" class="menu-link">
+                <a href="<?php echo esc_url( site_url( '/student-affairs/achievement' ) ); ?>" class="menu-link menu-link--dropdown">
                     Kemahasiswaan
                     <i class="ph ph-caret-down caret-icon"></i>
                 </a>
@@ -185,7 +191,7 @@ if (!function_exists('webjti_default_primary_menu_fallback')) {
 
             <!-- Penelitian -->
             <li class="menu-item menu-item-has-dropdown<?php echo $current_page === 'penelitian' ? ' current-menu-item' : ''; ?>">
-                <a href="#" class="menu-link" onclick="return false;">
+                <a href="#" class="menu-link menu-link--dropdown" onclick="return false;">
                     Penelitian
                     <i class="ph ph-caret-down caret-icon"></i>
                 </a>
@@ -234,6 +240,21 @@ if (!function_exists('webjti_default_primary_menu_fallback')) {
                 <a href="<?php echo esc_url( $info_page_link ); ?>" class="menu-link">
                     Informasi
                 </a>
+            </li>
+
+            <!-- Mobile Contact Info -->
+            <li class="mobile-contact-info">
+                <?php
+                $email = get_theme_mod('jti_topbar_email', 'jti@polinema.ac.id');
+                $phone_text = get_theme_mod('jti_topbar_phone', '(0341) 404424');
+                $phone_link = get_theme_mod('jti_topbar_phone_link', '+(0341) 404424');
+                ?>
+                <?php if ($email) : ?>
+                    <span class="top-header-item"><i class="ph ph-envelope"></i><a href="mailto:<?php echo esc_attr($email); ?>"><?php echo esc_html($email); ?></a></span>
+                <?php endif; ?>
+                <?php if ($phone_text) : ?>
+                    <span class="top-header-item"><i class="ph ph-phone"></i><a href="tel:<?php echo esc_attr($phone_link); ?>"><?php echo esc_html($phone_text); ?></a></span>
+                <?php endif; ?>
             </li>
         </ul>
         <?php
@@ -311,8 +332,8 @@ $jti_nav_class_filter = function($classes, $item, $args) {
 
         // Swap active state on default_achievement / prestasi pages
         $is_achievement_page = (isset($_GET['default_achievement']) && !empty($_GET['default_achievement'])) || 
-                               is_singular('prestasi') || 
-                               is_post_type_archive('prestasi') || 
+                               is_singular('achievement') || 
+                               is_post_type_archive('achievement') || 
                                is_page_template('templates/pages/achievement-page.php') ||
                                (isset($_SERVER['REQUEST_URI']) && (strpos($_SERVER['REQUEST_URI'], '/achievement') !== false || strpos($_SERVER['REQUEST_URI'], '/prestasi') !== false));
         
@@ -370,6 +391,9 @@ $jti_nav_link_filter = function($atts, $item, $args) {
         } else {
             $atts['class'] = 'menu-link';
         }
+        if (in_array('menu-item-has-children', $item->classes) || in_array('menu-item-has-dropdown', $item->classes)) {
+            $atts['class'] .= ' menu-link--dropdown';
+        }
     }
     return $atts;
 };
@@ -377,6 +401,39 @@ $jti_nav_link_filter = function($atts, $item, $args) {
 add_filter('nav_menu_css_class', $jti_nav_class_filter, 10, 3);
 add_filter('nav_menu_item_title', $jti_nav_title_filter, 10, 4);
 add_filter('nav_menu_link_attributes', $jti_nav_link_filter, 10, 3);
+
+$jti_nav_contact_append = function($items, $args) {
+    if ($args->theme_location === 'main_menu') {
+        $email = get_theme_mod('jti_topbar_email', 'jti@polinema.ac.id');
+        $phone_text = get_theme_mod('jti_topbar_phone', '(0341) 404424');
+        $phone_link = get_theme_mod('jti_topbar_phone_link', '+(0341) 404424');
+        
+        $contact_html = '<li class="mobile-contact-info">';
+        if ($email) {
+            $contact_html .= '<span class="top-header-item"><i class="ph ph-envelope"></i><a href="mailto:'.esc_attr($email).'">'.esc_html($email).'</a></span>';
+        }
+        if ($phone_text) {
+            $contact_html .= '<span class="top-header-item"><i class="ph ph-phone"></i><a href="tel:'.esc_attr($phone_link).'">'.esc_html($phone_text).'</a></span>';
+        }
+        $contact_html .= '</li>';
+        
+        $items .= $contact_html;
+    }
+    return $items;
+};
+add_filter('wp_nav_menu_items', $jti_nav_contact_append, 10, 2);
+
+$jti_nav_header_prepend = function($items, $args) {
+    if ($args->theme_location === 'main_menu') {
+        $header_html = '<li class="mobile-menu-header">';
+        $header_html .= '<span class="mobile-menu-title">Menu</span>';
+        $header_html .= '<button type="button" class="mobile-menu-close" aria-label="Tutup Menu"><i class="ph ph-x"></i></button>';
+        $header_html .= '</li>';
+        $items = $header_html . $items;
+    }
+    return $items;
+};
+add_filter('wp_nav_menu_items', $jti_nav_header_prepend, 10, 2);
 
 ?>
 
@@ -407,4 +464,6 @@ add_filter('nav_menu_link_attributes', $jti_nav_link_filter, 10, 3);
 remove_filter('nav_menu_css_class', $jti_nav_class_filter, 10);
 remove_filter('nav_menu_item_title', $jti_nav_title_filter, 10);
 remove_filter('nav_menu_link_attributes', $jti_nav_link_filter, 10);
+remove_filter('wp_nav_menu_items', $jti_nav_contact_append, 10);
+remove_filter('wp_nav_menu_items', $jti_nav_header_prepend, 10);
 ?>

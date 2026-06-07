@@ -197,7 +197,7 @@ function webjti_enqueue_assets() {
     );
   }
 
-  if ( is_singular('prestasi') || isset($_GET['default_achievement']) ) {
+  if ( is_singular('achievement') || isset($_GET['default_achievement']) ) {
     wp_enqueue_style(
       'jti-achievement-detail',
       get_template_directory_uri() . '/assets/css/sections/achievement-detail.css',

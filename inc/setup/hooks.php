@@ -86,8 +86,9 @@ add_action('template_redirect', function() {
    Memastikan kueri pencarian utama menggeledah data CPT kustom
 ======================================== */
 add_action( 'pre_get_posts', function( $query ) {
-  if ( ! is_admin() && $query->is_main_query() && $query->is_search() ) {
-    $query->set( 'post_type', [ 'post', 'page', 'information', 'lecturer', 'staff', 'prestasi' ] );
+  if ( $query->is_main_query() && $query->is_search() && ! is_admin() ) {
+    // Only search in these specific post types
+    $query->set( 'post_type', [ 'post', 'page', 'information', 'lecturer', 'staff', 'achievement' ] );
   }
 });
 
@@ -171,7 +172,7 @@ add_filter('single_template', function($template) {
       return $custom_template;
     }
     // Fallback for prestasi CPT mapped to single-achievement.php
-    if ($post_type === 'prestasi') {
+    if ($post_type === 'achievement') {
       $achievement_template = get_template_directory() . '/templates/singles/single-achievement.php';
       if (file_exists($achievement_template)) {
         return $achievement_template;
